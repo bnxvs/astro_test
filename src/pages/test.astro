@@ -1,0 +1,49 @@
+---
+import { getDirectusData } from "../../lib/directus";
+import directus from "../../lib/directus";
+import { readItems } from "@directus/sdk";
+import background from "../assets/background.svg";
+import "./test.css";
+
+const data = await directus.request(
+  readItems("members", {
+    fields: ["company_name", "bin", "logo"],
+  })
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <div id="container">
+      <img id="background" src={background.src} alt="" fetchpriority="high" />
+      <h1>Astro</h1>
+      <section id="links">
+        <a class="button" href="javascript:history.back()">
+          Return to Homepage
+        </a>
+      </section>
+
+      <ul id="card">
+        {
+          data.map((member) => (
+            <li id="#card">
+              <img
+                src=`https://df.grainunion.kz/assets/${member.logo}`
+                alt="no image"
+              />
+              <p style="font-weight: 700;">{member.company_name}</p>
+              <p>БИН: {member.bin}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </body>
+</html>
